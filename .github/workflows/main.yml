@@ -51,3 +51,18 @@ jobs:
         #working-directory: cloud-resume-challenge
       - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset # not going to ask questions as we can't answer them from here / we don't want to fail it when there is no changes
         #working-directory: cloud-resume-challenge
+  
+  # runs in parallel rather than relying on deploying infra
+  # as you may only want to change the front-end
+  deploy-site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: jakejarvis/s3-sync-action@master # uses pre-made github action
+        with:
+          args: --delete # does a clear up of the old/additional files
+        env:
+          AWS_S3_BUCKET: cloudresumechallenge-website # defined in template file
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          SOURCE_DIR: resume-site
