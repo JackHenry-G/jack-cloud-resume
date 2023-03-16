@@ -47,7 +47,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1 # keys are not region specific
-      - run: sam build
+      - run: sam build --user-container
         #working-directory: cloud-resume-challenge
       - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset # not going to ask questions as we can't answer them from here / we don't want to fail it when there is no changes
         #working-directory: cloud-resume-challenge
