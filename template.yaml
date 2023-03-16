@@ -1,0 +1,153 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  My SAM template to deploy my AWS Cloud Resume Challenge.
+  This includes a website hosted within Amazon S3 distributed
+  via CloudFront and Route 53. A back-end visitor counter
+  made possible with lambda, APIGateway and DynamoDB. As well
+  as CI/CD elements involving Github Actions and SAM.
+
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+  
+  # makes a S3 bucket
+  # must manually upload the website folder to the s3 bucket
+  # or use github actions to update this (eventually)
+  #$$$
+
+  MyWebsite:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      AccessControl: Private
+      WebsiteConfiguration:
+        IndexDocument: index.html
+      BucketName: !Sub ${AWS::StackName}-website
+
+  # applies bucket policy to S3 bucket that allows all public reads (GET)
+  BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      PolicyDocument:
+        Id: MyPolicy
+        Version: 2012-10-17
+        Statement:
+          - Sid: PublicReadForGetBucketObjects
+            Effect: Allow
+            Principal: "*"
+            Action: "s3:GetObject"
+            Resource: !Join
+              - ""
+              - - "arn:aws:s3:::"
+                - !Ref MyWebsite
+                - /*
+      Bucket: !Ref MyWebsite
+
+  MyRoute53Record:
+    Type: "AWS::Route53::RecordSetGroup"
+    Properties:
+      HostedZoneId: Z034371938J76AMVYIQP6 # Hosted zone ID of the domain name I bought in Amazon Route 53
+      RecordSets:
+        - Name: jackgoggin.com # Hosted zone name of the domain name I bought in Amazon Route 53
+          Type: A
+          AliasTarget:
+            HostedZoneId: Z2FDTNDATAQYW2 # Specify Z2FDTNDATAQYW2. This is always the hosted zone ID when you create an alias record that routes traffic to a CloudFront distribution
+            DNSName: !GetAtt MyDistribution.DomainName # points to our cloudfront distribution (below)
+
+  # configures cloudfront distribution and cleans up URL name
+  # cloudfront is a cache, that holds cache all over the world to increase efficiency when retrieving webpages
+  MyDistribution:
+    Type: "AWS::CloudFront::Distribution"
+    Properties:
+      # attaches certificate to cloudfront distribution
+      DistributionConfig:
+        ViewerCertificate:
+          AcmCertificateArn: arn:aws:acm:us-east-1:102671857835:certificate/f53f0d62-ef79-4878-a3b4-957671ca8e4a
+          SslSupportMethod: sni-only
+        Aliases:
+          - jackgoggin.com
+
+        DefaultCacheBehavior:
+          ViewerProtocolPolicy: redirect-to-https
+          TargetOriginId: cloudresumechallenge-website.s3.eu-west-2.amazonaws.com # references origin in next section
+          
+          # setup cache behaviour
+          # allows cloudfront to act as a proxy to S3
+          # setting these to 0, means everytime we hit cloudfront, cloudfront hits S3 retrieving newest things
+          DefaultTTL: 0 
+          MinTTL: 0
+          MaxTTL: 0
+          ForwardedValues:
+            QueryString: false
+
+        # origin of actual content for our CDN
+        Origins:
+          - DomainName: cloudresumechallenge-website.s3.eu-west-2.amazonaws.com
+            Id: cloudresumechallenge-website.s3.eu-west-2.amazonaws.com
+            CustomOriginConfig:
+              OriginProtocolPolicy: match-viewer
+        Enabled: "true"
+        DefaultRootObject: index.html
+  # ------------------------------------------------------------------------------------------------
+  # ------------------------------BACKEND-----------------------------------------------------------
+
+  # """""""""""""""""""""email contact function """""""""""""""""""""
+  # EmailContactFormFunction: # name of the resource, can be anything we want
+  #   Type: AWS::Serverless::Function # type of resource (lambda)
+  #   Properties:
+  #     FunctionName: !Sub ${AWS::StackName}-sendEmail
+  #     CodeUri: Lambda/ # where the lambda function is in our project
+  #     Handler: SendEmailViaSES.lambda_handler # filename.functionName
+  #     Runtime: python3.8
+  #     Events:
+  #       UpdateVisitorCount: # events that will trigger our function
+  #         Type: Api # API Gatweway resource
+  #         Properties:
+  #           Path: /send_email # endpoint of api gateway e.g. https://apigw_url.com/Prod/send_email
+  #           Method: POST # HTTP method that the gateway will respond to
+
+  # """""""""""""""""""""updating and getting visitor counter function """""""""""""""""""""
+  VisitorCounterFunction: # name of the resource, can be anything we want
+    Type: AWS::Serverless::Function # type of resource (lambda)
+    Properties:
+      FunctionName: !Sub ${AWS::StackName}-updateVisitorCounter
+      CodeUri: Lambda/ # where the lambda function is in our project
+      Handler: UpdateVisitorCount.lambda_handler # filename.functionName
+      Runtime: python3.8
+      Events:
+        UpdateVisitorCount: # events that will trigger our function
+          Type: Api # API Gatweway resource
+          Properties:
+            Path: /visitor_counter # endpoint of api gateway e.g. https://apigw_url.com/Prod/hello
+            Method: GET # HTTP method that the gateway will respond to
+
+      # will pass environment variables to the lambda functions    
+      Environment:
+        Variables: 
+          databaseName : !Ref DynamoDBTable # return name of the table - my-sam-app-VisitorCounterAwsCloudResumeChallengeTable-asfs
+
+      # A policy template is a pre-made (by the SAM folks) IAM policy that we can attach to any of our resources
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DynamoDBTable
+
+  DynamoDBTable:
+    Type: AWS::Serverless::SimpleTable # creates a simple DynamoDB table
+    Properties:
+      TableName: !Sub ${AWS::StackName}-dynamoDbTable
+      PrimaryKey:
+        Name: id
+        Type: String
+      ProvisionedThroughput: # uses PAY_PER_REQUEST model by default
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      SSESpecification: # Server side encryption
+        SSEEnabled: false
+
+Outputs:
+  VisitorCounterApi:
+    Description: "API Gateway endpoint URL for Prod stage for Cloud Challenge resume webpage. Don't forget to input this into your index.html and complete aws sync with s3!!!!!!!!!!!!!"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/" # /visitor_counter or /contact_form
+

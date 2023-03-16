@@ -1,0 +1,120 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'My SAM template to deploy my AWS Cloud Resume Challenge. This includes
+  a website hosted within Amazon S3 distributed via CloudFront and Route 53. A back-end
+  visitor counter made possible with lambda, APIGateway and DynamoDB. As well as CI/CD
+  elements involving Github Actions and SAM.
+
+  '
+Globals:
+  Function:
+    Timeout: 3
+Resources:
+  MyWebsite:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: Private
+      WebsiteConfiguration:
+        IndexDocument: index.html
+      BucketName:
+        Fn::Sub: ${AWS::StackName}-website
+  BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      PolicyDocument:
+        Id: MyPolicy
+        Version: '2012-10-17'
+        Statement:
+        - Sid: PublicReadForGetBucketObjects
+          Effect: Allow
+          Principal: '*'
+          Action: s3:GetObject
+          Resource:
+            Fn::Join:
+            - ''
+            - - 'arn:aws:s3:::'
+              - Ref: MyWebsite
+              - /*
+      Bucket:
+        Ref: MyWebsite
+  MyRoute53Record:
+    Type: AWS::Route53::RecordSetGroup
+    Properties:
+      HostedZoneId: Z034371938J76AMVYIQP6
+      RecordSets:
+      - Name: jackgoggin.com
+        Type: A
+        AliasTarget:
+          HostedZoneId: Z2FDTNDATAQYW2
+          DNSName:
+            Fn::GetAtt:
+            - MyDistribution
+            - DomainName
+  MyDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        ViewerCertificate:
+          AcmCertificateArn: arn:aws:acm:us-east-1:102671857835:certificate/f53f0d62-ef79-4878-a3b4-957671ca8e4a
+          SslSupportMethod: sni-only
+        Aliases:
+        - jackgoggin.com
+        DefaultCacheBehavior:
+          ViewerProtocolPolicy: redirect-to-https
+          TargetOriginId: cloudresumechallenge-website.s3.eu-west-2.amazonaws.com
+          DefaultTTL: 0
+          MinTTL: 0
+          MaxTTL: 0
+          ForwardedValues:
+            QueryString: false
+        Origins:
+        - DomainName: cloudresumechallenge-website.s3.eu-west-2.amazonaws.com
+          Id: cloudresumechallenge-website.s3.eu-west-2.amazonaws.com
+          CustomOriginConfig:
+            OriginProtocolPolicy: match-viewer
+        Enabled: 'true'
+        DefaultRootObject: index.html
+  VisitorCounterFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName:
+        Fn::Sub: ${AWS::StackName}-updateVisitorCounter
+      CodeUri: VisitorCounterFunction
+      Handler: UpdateVisitorCount.lambda_handler
+      Runtime: python3.8
+      Events:
+        UpdateVisitorCount:
+          Type: Api
+          Properties:
+            Path: /visitor_counter
+            Method: GET
+      Environment:
+        Variables:
+          databaseName:
+            Ref: DynamoDBTable
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: DynamoDBTable
+    Metadata:
+      SamResourceId: VisitorCounterFunction
+  DynamoDBTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName:
+        Fn::Sub: ${AWS::StackName}-dynamoDbTable
+      PrimaryKey:
+        Name: id
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      SSESpecification:
+        SSEEnabled: false
+Outputs:
+  VisitorCounterApi:
+    Description: API Gateway endpoint URL for Prod stage for Cloud Challenge resume
+      webpage. Don't forget to input this into your index.html and complete aws sync
+      with s3!!!!!!!!!!!!!
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/
