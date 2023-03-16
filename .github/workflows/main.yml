@@ -3,7 +3,9 @@ name: Python package
 on: [push]
 
 jobs:
-  python_test:
+
+  # this is a simple template retrieved and modified from here - https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+  lambda_tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -32,3 +34,20 @@ jobs:
       - name: Test with pytest
         run: |
           pytest Lambda/test*
+
+  build-and-deploy-infra:
+    needs: test-infra
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      - uses: aws-actions/setup-sam@v1
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-2 # OR eu-west-2?????????
+      - run: sam build
+        #working-directory: cloud-resume-challenge
+      - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset # not going to ask questions as we can't answer them from here / we don't want to fail it when there is no changes
+        #working-directory: cloud-resume-challenge
