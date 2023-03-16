@@ -10,7 +10,8 @@ class TestDatabaseFunctions(unittest.TestCase):
 
     def setUp(self):
         """
-        Create database resource and mock table
+        Create database resource and mock dyanmodb table.
+
         """
         self.dynamodb = boto3.resource('dynamodb', region_name='eu-west-2')
         # Create the DynamoDB table.
