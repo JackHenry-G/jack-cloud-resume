@@ -10,7 +10,8 @@ class TestDatabaseFunctions(unittest.TestCase):
 
     def setUp(self):
         """
-        Create database resource and mock table
+        Create database resource and mock dyanmodb table.
+
         """
         self.dynamodb = boto3.resource('dynamodb', region_name='eu-west-2')
         # Create the DynamoDB table.
@@ -51,11 +52,12 @@ class TestDatabaseFunctions(unittest.TestCase):
         event = {}
         context = {}
         
+
         # no data in current database, so must make a new value and set it to 1 (first visitor to webpage)
-        self.assertEqual(lambda_handler(event, context, table=self.count_table), {'statusCode': 200, 'body': {'visitor_count': 1}}, "Incorrect resopnse for updating database with no records in")
+        self.assertEqual(lambda_handler(event, context, table=self.count_table), {'statusCode': 200, 'headers': {'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*', 'Access-Control-Allow-Credentials': '*', 'Content-Type': 'application/json'}, 'body': '{"visitor_count": 1}'}, "Incorrect resopnse for updating database with no records in")
 
         # second visit to webpage, so 1 + 1 = 2
-        self.assertEqual(lambda_handler(event, context, table=self.count_table), {'statusCode': 200, 'body': {'visitor_count': 2}}, "Incorrect resopnse for updating database with existing records")
+        self.assertEqual(lambda_handler(event, context, table=self.count_table), {'statusCode': 200, 'headers': {'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*', 'Access-Control-Allow-Credentials': '*', 'Content-Type': 'application/json'}, 'body': '{"visitor_count": 2}'}, "Incorrect resopnse for updating database with existing records")
 
 
 if __name__ == '__main__':
