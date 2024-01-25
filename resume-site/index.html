@@ -71,7 +71,7 @@
         get_visitors();
 
         // EMAIL CONTACT FORM WITH AWS
-        /*function submitToAPI(e) {
+        function submitToAPI(e) {
             e.preventDefault();
             var name = $("#Name").val();
             var email = $("#Email").val();
@@ -85,22 +85,22 @@
              };
             $.ajax({
               type: "POST",
-              url : "https://zfdbk1fjpe.execute-api.eu-west-2.amazonaws.com/Prod/send_email",
+              url : "https://zfdbk1fjpe.execute-api.eu-west-2.amazonaws.com/Prod/sendEmailFunction",
               dataType: "json",
               crossDomain: "true",
               contentType: "application/json; charset=utf-8",
               data: JSON.stringify(data),
               success: function () {
                 // clear form and show a success message
-                alert("Thanks for your email, I will get back to you as soon as I can.");
+                alert("Eamil sent succesfully! Thanks, I will get back to you as soon as I can.");
                 document.getElementById("contact-form").reset();
             location.reload();
               },
               error: function () {
                 // show an error message
-                alert("Thanks but your email was unsuccessful. Maybe try my LinkedIn.");
+                alert("There was a problem sending your email. Please try my LinkedIn instead.");
               }});
-          }*/
+          }
     </script>
 
 	</head>
@@ -124,6 +124,7 @@
 						<li><a href="#" data-nav-section="services">Skills</a></li>
 						<li><a href="#" data-nav-section="experience">Experience</a></li>
 						<li><a href="#" data-nav-section="education">Education</a></li>
+						<li><a href="#" data-nav-section="contact">Contact me</a></li>
 					</ul>
 				</div>
 
@@ -482,6 +483,79 @@
 									    </div>
 									</div>
 								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="colorlib-contact" data-section="contact">
+				<div class="colorlib-narrow-content">
+					<div class="row">
+						<div class="col-md-6 col-md-offset-3 col-md-pull-3 animate-box" data-animate-effect="fadeInLeft">
+							<span class="heading-meta">Get in Touch</span>
+							<h2 class="colorlib-heading">Contact me</h2>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="colorlib-feature colorlib-feature-sm animate-box" data-animate-effect="fadeInLeft">
+								<div class="colorlib-icon">
+									<i class="fa-brands fa-linkedin-in"></i>
+								</div>
+								<div class="colorlib-text">
+									<p>
+										<a href="https://www.linkedin.com/in/jack-goggin" class="rectangle">
+											My LinkedIn
+										</a>
+									</p>
+								</div>
+							</div>
+
+							<div class="colorlib-feature colorlib-feature-sm animate-box" data-animate-effect="fadeInLeft">
+								<div class="colorlib-icon">
+									<i class="fa-brands fa-github"></i>
+								</div>
+								<div class="colorlib-text">
+									<p>
+										<a href="https://github.com/JackHenry-G" class="rectangle">
+											My Github
+										</a>
+									</p>
+								</div>
+							</div>
+
+							<div class="colorlib-feature colorlib-feature-sm animate-box" data-animate-effect="fadeInLeft">
+								<div class="colorlib-icon">
+									<i class="icon-map"></i>
+								</div>
+								<div class="colorlib-text">
+									<p>Email me --></p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-7 col-md-push-1">
+							<div class="row">
+								<div class="col-md-10 col-md-offset-1 col-md-pull-1 animate-box" data-animate-effect="fadeInRight">
+									<form action="">
+										<div class="form-group">
+											<input type="text" class="form-control" id="Name" name="Name" placeholder="Your name">
+										</div>
+										<div class="form-group">
+											<input type="text" class="form-control" id="Email" name="Email" placeholder="Your email">
+										</div>
+										<div class="form-group">
+											<input type="text" class="form-control" id="Subject" name="Subject" placeholder="Your subject">
+										</div>
+										<div class="form-group">
+											<textarea name="" cols="30" rows="7" class="form-control"  id="Message" name="Message" placeholder="Your message"></textarea>
+										</div>
+										<div class="form-group">
+											<input type="submit" class="btn btn-primary btn-send-message" onClick="submitToAPI(event)" value="Send Message">
+										</div>
+									</form>
+								</div>
+								
 							</div>
 						</div>
 					</div>
