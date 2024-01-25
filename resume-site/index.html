@@ -83,23 +83,24 @@
                email : email,
                message : message
              };
-            $.ajax({
-              type: "POST",
-              url : "https://zfdbk1fjpe.execute-api.eu-west-2.amazonaws.com/Prod/sendEmailFunction",
-              dataType: "json",
-              crossDomain: "true",
-              contentType: "application/json; charset=utf-8",
-              data: JSON.stringify(data),
-              success: function () {
-                // clear form and show a success message
-                alert("Eamil sent succesfully! Thanks, I will get back to you as soon as I can.");
-                document.getElementById("contact-form").reset();
-            location.reload();
-              },
-              error: function () {
-                // show an error message
-                alert("There was a problem sending your email. Please try my LinkedIn instead.");
-              }});
+			 $.ajax({
+				type: "POST",
+				url: "https://zfdbk1fjpe.execute-api.eu-west-2.amazonaws.com/Prod/sendEmailFunction",
+				dataType: "json",
+				crossDomain: "true",
+				contentType: "application/json; charset=utf-8",
+				data: JSON.stringify(data),
+				success: function () {
+					// Clear form and show a success message
+					alert("Email sent successfully! Thanks, I will get back to you as soon as I can.");
+					document.getElementById("contact-form").reset();
+					// Optional: Any additional logic after form reset
+				},
+				error: function () {
+					// Show an error message
+					alert("There was a problem sending your email. Please try my LinkedIn instead.");
+				}
+			});
           }
     </script>
 
@@ -537,7 +538,7 @@
 						<div class="col-md-7 col-md-push-1">
 							<div class="row">
 								<div class="col-md-10 col-md-offset-1 col-md-pull-1 animate-box" data-animate-effect="fadeInRight">
-									<form action="">
+									<form id="contact-form" action="">
 										<div class="form-group">
 											<input type="text" class="form-control" id="Name" name="Name" placeholder="Your name">
 										</div>
