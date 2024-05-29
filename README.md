@@ -4,6 +4,8 @@
 
 https://jackgoggin.com - a secure, scalable, serverless web application on AWS with automated deployment pipelines.
 
+![image](https://github.com/JackHenry-G/jack-cloud-resume/assets/78259929/dddb9e6c-378a-4376-8e35-69cc2249e2f8)
+
 **Benefits of the challenge
 **
 
