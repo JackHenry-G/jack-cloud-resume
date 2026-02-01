@@ -1,593 +1,781 @@
-<!DOCTYPE HTML>
+<!doctype html>
 <html>
-	<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Jack Goggin</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="" />
-	<meta name="keywords" content="" />
-	<meta name="author" content="" />
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Jack Goggin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="author" content="" />
 
-  <!-- Facebook and Twitter integration -->
-	<meta property="og:title" content=""/>
-	<meta property="og:image" content=""/>
-	<meta property="og:url" content=""/>
-	<meta property="og:site_name" content=""/>
-	<meta property="og:description" content=""/>
-	<meta name="twitter:title" content="" />
-	<meta name="twitter:image" content="" />
-	<meta name="twitter:url" content="" />
-	<meta name="twitter:card" content="" />
+    <!-- Facebook and Twitter integration -->
+    <meta property="og:title" content="" />
+    <meta property="og:image" content="" />
+    <meta property="og:url" content="" />
+    <meta property="og:site_name" content="" />
+    <meta property="og:description" content="" />
+    <meta name="twitter:title" content="" />
+    <meta name="twitter:image" content="" />
+    <meta name="twitter:url" content="" />
+    <meta name="twitter:card" content="" />
 
-	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-	<link rel="shortcut icon" href="favicon.ico">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <link rel="shortcut icon" href="favicon.ico" />
 
-	<link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700" rel="stylesheet">
-	
-	<!-- Animate.css -->
-	<link rel="stylesheet" href="css/animate.css">
-	<!-- Icomoon Icon Fonts-->
-	<link rel="stylesheet" href="css/icomoon.css">
-	<!-- Bootstrap  -->
-	<link rel="stylesheet" href="css/bootstrap.css">
-	<!-- Flexslider  -->
-	<link rel="stylesheet" href="css/flexslider.css">
-	<!-- Flaticons  -->
-	<link type="text/html" href="fonts/flaticon/font/flaticon.css">
-	<!-- Owl Carousel -->
-	<link rel="stylesheet" href="css/owl.carousel.min.css">
-	<link rel="stylesheet" href="css/owl.theme.default.min.css">
-	<!-- Theme style  -->
-	<link rel="stylesheet" href="css/style.css">
-	<script src="https://kit.fontawesome.com/eb7c358919.js" crossorigin="anonymous"></script>
+    <link
+      href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700"
+      rel="stylesheet"
+    />
 
-	<link rel="icon" type="images/png" href="images/face_xmas.jpeg">
-	<!-- Modernizr JS -->
-	<script src="js/modernizr-2.6.2.min.js"></script>
-	<!-- FOR IE9 below -->
-	<!--[if lt IE 9]>
-	<script src="js/respond.min.js"></script>
-	<![endif]-->
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="css/animate.css" />
+    <!-- Icomoon Icon Fonts-->
+    <link rel="stylesheet" href="css/icomoon.css" />
+    <!-- Bootstrap  -->
+    <link rel="stylesheet" href="css/bootstrap.css" />
+    <!-- Flexslider  -->
+    <link rel="stylesheet" href="css/flexslider.css" />
+    <!-- Flaticons  -->
+    <link type="text/html" href="fonts/flaticon/font/flaticon.css" />
+    <!-- Owl Carousel -->
+    <link rel="stylesheet" href="css/owl.carousel.min.css" />
+    <link rel="stylesheet" href="css/owl.theme.default.min.css" />
+    <!-- Theme style  -->
+    <link rel="stylesheet" href="css/style.css" />
+    <script
+      src="https://kit.fontawesome.com/eb7c358919.js"
+      crossorigin="anonymous"
+    ></script>
 
-	<script>
-        // VISITOR COUNT WITH AWS
-        // GET API REQUEST
-        async function get_visitors() {
-            // call post api request function
-            //await post_visitor();
-            try {
-                let response = await fetch('https://zfdbk1fjpe.execute-api.eu-west-2.amazonaws.com/Prod/visitor_counter', {
-                    method: 'GET',
-                });
-                let data = await response.json()
-                document.getElementById("visitors").innerHTML = "This site has been visited " + data.visitor_count + " times.";
-                return data;
-            } catch (err) {
-                console.error(err);
-            }
+    <link rel="icon" type="images/png" href="images/face_xmas.jpeg" />
+    <!-- Modernizr JS -->
+    <script src="js/modernizr-2.6.2.min.js"></script>
+    <!-- FOR IE9 below -->
+    <!--[if lt IE 9]>
+      <script src="js/respond.min.js"></script>
+    <![endif]-->
+
+    <script>
+      // VISITOR COUNT WITH AWS
+      // GET API REQUEST
+      async function get_visitors() {
+        // call post api request function
+        //await post_visitor();
+        try {
+          let response = await fetch(
+            "https://zfdbk1fjpe.execute-api.eu-west-2.amazonaws.com/Prod/visitor_counter",
+            {
+              method: "GET",
+            },
+          );
+          let data = await response.json();
+          document.getElementById("visitors").innerHTML =
+            "This site has been visited " + data.visitor_count + " times.";
+          return data;
+        } catch (err) {
+          console.error(err);
         }
-        get_visitors();
+      }
+      get_visitors();
 
-        // EMAIL CONTACT FORM WITH AWS
-        function submitToAPI(e) {
-            e.preventDefault();
-            var name = $("#Name").val();
-            var email = $("#Email").val();
-            var subject = $("#Subject").val();
-            var message = $("#Message").val();
-            var data = {
-               name : name,
-               subject: subject,
-               email : email,
-               message : message
-             };
-			 $.ajax({
-				type: "POST",
-				url: "https://zfdbk1fjpe.execute-api.eu-west-2.amazonaws.com/Prod/sendEmailFunction",
-				dataType: "json",
-				crossDomain: "true",
-				contentType: "application/json; charset=utf-8",
-				data: JSON.stringify(data),
-				success: function () {
-					// Clear form and show a success message
-					alert("Email sent successfully! Thanks, I will get back to you as soon as I can.");
-					document.getElementById("contact-form").reset();
-					// Optional: Any additional logic after form reset
-				},
-				error: function () {
-					// Show an error message
-					alert("There was a problem sending your email. Please try my LinkedIn instead.");
-				}
-			});
-          }
+      // EMAIL CONTACT FORM WITH AWS
+      function submitToAPI(e) {
+        e.preventDefault();
+        var name = $("#Name").val();
+        var email = $("#Email").val();
+        var subject = $("#Subject").val();
+        var message = $("#Message").val();
+        var data = {
+          name: name,
+          subject: subject,
+          email: email,
+          message: message,
+        };
+        $.ajax({
+          type: "POST",
+          url: "https://zfdbk1fjpe.execute-api.eu-west-2.amazonaws.com/Prod/sendEmailFunction",
+          dataType: "json",
+          crossDomain: "true",
+          contentType: "application/json; charset=utf-8",
+          data: JSON.stringify(data),
+          success: function () {
+            // Clear form and show a success message
+            alert(
+              "Email sent successfully! Thanks, I will get back to you as soon as I can.",
+            );
+            document.getElementById("contact-form").reset();
+            // Optional: Any additional logic after form reset
+          },
+          error: function () {
+            // Show an error message
+            alert(
+              "There was a problem sending your email. Please try my LinkedIn instead.",
+            );
+          },
+        });
+      }
     </script>
+  </head>
+  <body>
+    <div id="colorlib-page">
+      <div class="container-wrap">
+        <a
+          href="#"
+          class="js-colorlib-nav-toggle colorlib-nav-toggle"
+          data-toggle="collapse"
+          data-target="#navbar"
+          aria-expanded="false"
+          aria-controls="navbar"
+          ><i></i
+        ></a>
+        <aside
+          id="colorlib-aside"
+          role="complementary"
+          class="border js-fullheight"
+        >
+          <div class="text-center">
+            <div
+              class="author-img"
+              style="background-image: url(images/face_xmas.jpeg)"
+            ></div>
+            <h1 id="colorlib-logo"><a href="index.html">Jack Goggin</a></h1>
+            <span class="position"
+              ><a href="#"
+                ><p class="hero-job-desc" id="visitors">&nbsp;</p></a
+              ></span
+            >
+          </div>
 
-	</head>
-	<body>
-	<div id="colorlib-page">
-		<div class="container-wrap">
-		<a href="#" class="js-colorlib-nav-toggle colorlib-nav-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><i></i></a>
-		<aside id="colorlib-aside" role="complementary" class="border js-fullheight">
-			<div class="text-center">
-				<div class="author-img" style="background-image: url(images/face_xmas.jpeg);"></div>
-				<h1 id="colorlib-logo"><a href="index.html">Jack Goggin</a></h1>
-				<span class="position"><a href="#"><p class="hero-job-desc" id="visitors">&nbsp;</p></a></span>
-			</div>
-			
-			<nav id="colorlib-main-menu" role="navigation" class="navbar">
-				<div id="navbar" class="collapse">
-					<ul>
-						<!-- End Social Networks section --> 
-						<li><a href="#" data-nav-section="about">About</a></li>
-						<li><a href="#" data-nav-section="projects">Portfolio</a></li>
-						<li><a href="#" data-nav-section="services">Skills</a></li>
-						<li><a href="#" data-nav-section="experience">Experience</a></li>
-						<li><a href="#" data-nav-section="education">Education</a></li>
-						<li><a href="#" data-nav-section="contact">Contact me</a></li>
-					</ul>
-				</div>
+          <nav id="colorlib-main-menu" role="navigation" class="navbar">
+            <div id="navbar" class="collapse">
+              <ul>
+                <!-- End Social Networks section -->
+                <li><a href="#" data-nav-section="about">About</a></li>
+                <li><a href="#" data-nav-section="projects">Portfolio</a></li>
+                <li><a href="#" data-nav-section="education">Education</a></li>
+                <li><a href="#" data-nav-section="contact">Contact me</a></li>
+              </ul>
+            </div>
 
-				<div class="colorlib-footer">
-					<ul>
-						<li><a href="https://github.com/JackHenry-G" target="_blank"><i class="fa-brands fa-github"></i></a></li>
-						<li><a href="https://www.linkedin.com/in/jack-goggin" target="_blank"><i class="icon-linkedin2"></i></a></li>
-					</ul>
-					<small><span>Website template - <a href="https://colorlib.com/wp/template/jackson/" target="_blank">Colorlib</a></span></small>
-				</div>
+            <div class="colorlib-footer">
+              <ul>
+                <li>
+                  <a href="https://github.com/JackHenry-G" target="_blank"
+                    ><i class="fa-brands fa-github"></i
+                  ></a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.linkedin.com/in/jack-goggin"
+                    target="_blank"
+                    ><i class="icon-linkedin2"></i
+                  ></a>
+                </li>
+              </ul>
+              <small
+                ><span
+                  >Website template -
+                  <a
+                    href="https://colorlib.com/wp/template/jackson/"
+                    target="_blank"
+                    >Colorlib</a
+                  ></span
+                ></small
+              >
+            </div>
+          </nav>
+        </aside>
 
-			</nav>
-		</aside>
+        <div id="colorlib-main">
+          <section class="colorlib-about" data-section="about">
+            <div class="colorlib-narrow-content">
+              <div class="row">
+                <div class="col-md-12">
+                  <div
+                    class="row row-bottom-padded-sm animate-box"
+                    data-animate-effect="fadeInLeft"
+                  >
+                    <div class="col-md-12">
+                      <div class="about-desc">
+                        <span class="heading-meta">Who Am I?</span>
+                        <h2 class="colorlib-heading">About Me</h2>
+                        <p>
+                          Automations Engineer with a strong background in
+                          software development and business analysis. I design
+                          and implement practical automation, AI, and data
+                          solutions that streamline workflows, reduce costs, and
+                          enhance team efficiency.
+                        </p>
+                        <p>
+                          Recently, I’ve focused on integrating and developing
+                          AI agents to build more intelligent workflows..
+                        </p>
+                        <p>
+                          I enjoy hands-on roles with consistent collobration
+                          with both technical and non-technical stakeholders.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div
+                      class="col-md-3 animate-box"
+                      data-animate-effect="fadeInLeft"
+                    >
+                      <div class="services color-1">
+                        <span class="icon2"><i class="icon-bulb"></i></span>
+                        <h3>Intelligent Automation</h3>
+                      </div>
+                    </div>
+                    <div
+                      class="col-md-3 animate-box"
+                      data-animate-effect="fadeInRight"
+                    >
+                      <div class="services color-2">
+                        <span class="icon2"
+                          ><i class="icon-globe-outline"></i
+                        ></span>
+                        <h3>Cloud and AI certified</h3>
+                      </div>
+                    </div>
+                    <div
+                      class="col-md-3 animate-box"
+                      data-animate-effect="fadeInBottom"
+                    >
+                      <div class="services color-4">
+                        <span class="icon2"><i class="icon-phone3"></i></span>
+                        <h3>Business Analysis</h3>
+                      </div>
+                    </div>
+                    <div
+                      class="col-md-3 animate-box"
+                      data-animate-effect="fadeInTop"
+                    >
+                      <div class="services color-3">
+                        <span class="icon2"><i class="icon-data"></i></span>
+                        <h3>Data Visualisation</h3>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
 
-		<div id="colorlib-main">
-			<section class="colorlib-about" data-section="about">
-				<div class="colorlib-narrow-content">
-					<div class="row">
-						<div class="col-md-12">
-							<div class="row row-bottom-padded-sm animate-box" data-animate-effect="fadeInLeft">
-								<div class="col-md-12">
-									<div class="about-desc">
-										<span class="heading-meta">Who Am I?</span>
-										<h2 class="colorlib-heading">About me</h2>
-										<p>
-											A versatile Java Developer with 2+ years experience and a 1st class BSc (Hons) in Software Engineering. Complemented by
-											further experience roles involving Product Management and Data Analysis. 
-											This unique blend creates an effective communicator able to bridge the gap between development and business to build 
-											a valuable product. Quick learner ready to contribute to success.
-										</p>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-3 animate-box" data-animate-effect="fadeInLeft">
-									<div class="services color-1">
-										<span class="icon2"><i class="icon-bulb"></i></span>
-										<h3>Java Engineer</h3>
-									</div>
-								</div>
-								<div class="col-md-3 animate-box" data-animate-effect="fadeInRight">
-									<div class="services color-2">
-										<span class="icon2"><i class="icon-globe-outline"></i></span>
-										<h3>Cloud certified</h3>
-									</div>
-								</div>
-								<div class="col-md-3 animate-box" data-animate-effect="fadeInBottom">
-									<div class="services color-4">
-										<span class="icon2"><i class="icon-phone3"></i></span>
-										<h3>Product Manager</h3>
-									</div>
-								</div>
-								<div class="col-md-3 animate-box" data-animate-effect="fadeInTop">
-									<div class="services color-3">
-										<span class="icon2"><i class="icon-data"></i></span>
-										<h3>Data Analyst</h3>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
-			
-			<section class="colorlib-blog" data-section="projects">
-				<div class="colorlib-narrow-content">
-					<div class="row">
-						<div class="col-md-6 col-md-offset-3 col-md-pull-3 animate-box" data-animate-effect="fadeInLeft">
-							<span class="heading-meta">Personal</span>
-							<h2 class="colorlib-heading">Projects and blogs</h2>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-4 col-sm-6 animate-box" data-animate-effect="fadeInLeft">
-							<div class="blog-entry">
-								<a href="https://public.tableau.com/app/profile/jack.goggin/vizzes" target="_blank" class="blog-img"><img src="images/tableau_image.png" class="img-responsive"></a>
-								<div class="desc">
-									<span><small><a href="https://public.tableau.com/app/profile/jack.goggin/vizzes" targe="_blank">Dashboard</a></small></span>
-									<span><small>Tableau | Python</small></span>
-									<h3>Data Analysis</h3>
-									<p>See my Tableau vizzes where I complete analysis on data using Tableua and Python. Examples pices include: "Are we getting better at making movies?"</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 col-sm-6 animate-box" data-animate-effect="fadeInLeft">
-							<div class="blog-entry">
-								<a href="https://my-movielist-in-react.pages.dev/Home" target="_blank" class="blog-img"><img src="images/movielist_image.png" class="img-responsive"></a>
-								<div class="desc">
-									<span><small><a href="https://my-movielist-in-react.pages.dev/Home">Website</a> | <a href="https://github.com/JackHenry-G/my-movielist-in-react">Frontend code</a></small> | <small><a href="https://github.com/JackHenry-G/MovieListApi">Backend code</a></small></span>
-									<span><small>SPRING BOOT | REACT | REST API | DOCKER</small></span>
-									<h3>MovieList - a website for rating movies</h3>
-									<p>A Spring Boot & React web application that allows you to create a personalized list of your movie viewing history along with ratings and then be notified when they show in a cinema near you!</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 col-sm-6 animate-box" data-animate-effect="fadeInLeft">
-							<div class="blog-entry">
-								<a href="https://github.com/JackHenry-G/TopMoviesProject" target="_blank" class="blog-img"><img src="images/TopMovies.png" class="img-responsive"></a>
-								<div class="desc">
-									<span><small><a href="https://github.com/JackHenry-G/TopMoviesProject">Code</a></small></span>
-									<span><small>SWING GUI | SERIALIZATION | THREADING </small></span>
-									<h3>Top Movies Project - a Java Swing GUI and serialization </h3>
-									<p>Very similar to the 'MovieList' project but built to demonstrate GUI capabilites using Java Swing, threading and concurrency to create animation screens and serialization to save each user's movies.</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 col-sm-6 animate-box" data-animate-effect="fadeInLeft">
-							<div class="blog-entry">
-								<a href="https://dev.to/jackhenryg/my-cloud-resume-challenge-4e6i" target="_blank" class="blog-img"><img src="images/cloud_resume_challenge.png" class="img-responsive"></a>
-								<div class="desc">
-									<span><small><a href="https://dev.to/jackhenryg/my-cloud-resume-challenge-4e6i">Blog</a></small></span>
-									<span><small>AWS | CI/CD | CLOUD | PYTHON</small></span>
-									<h3>How did I build this website with AWS?</h3>
-									<p>A short blog on how I developed and deployed this website on AWS to be secure and scalable, with testing suites and an automated deployment pipeline using services like S3, CloudFront, API Gateway, Lambda, DynamoDB, AWS SAM and more.</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 col-sm-6 animate-box" data-animate-effect="fadeInLeft">
-							<div class="blog-entry">
-								<a href="./Product Owner - improving a digital journey.pdf" target="_blank" class="blog-img"><img src="images/pm.png" class="img-responsive"></a>
-								<div class="desc">
-									<span><small><a href="./Product Owner - improving a digital journey.pdf">Blog</a></small></span>
-									<span><small>VISION | PRIORITIZING | AGILE</small></span>
-									<h3>How do you Product Manage?</h3>
-									<p>A short presentation on foundational product management using an dummy project, learned throughout my stint in the role where I learned the importance of aliging product vision with business objectives, data driven decision making and Scrum project management.</p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
-	
-			<section class="colorlib-services" data-section="services">
-				<div class="colorlib-narrow-content">
-					<div class="row">
-						<div class="col-md-6 col-md-offset-3 col-md-pull-3 animate-box" data-animate-effect="fadeInLeft">
-							<span class="heading-meta">Skills</span>
-							<h2 class="colorlib-heading">My tech stack</h2>
-						</div>
-					</div>
-					<div class="row row-pt-md">
-						<div class="col-md-4 text-center animate-box">
-							<div class="services color-3">
-								<span class="icon">
-									<i class="icon-phone3"></i>
-								</span>
-								<div class="desc">
-									<h3>Languages</h3>
-									<p>Java, Python, HTML, CSS, JS, SQL, No-SQL</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 text-center animate-box">
-							<div class="services color-2">
-								<span class="icon">
-									<i class="icon-data"></i>
-								</span>
-								<div class="desc">
-									<h3>Databases</h3>
-									<p>PostgreSQL, ArangoDB (Graph), DynamoDB</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 text-center animate-box">
-							<div class="services color-4">
-								<span class="icon">
-									<i class="icon-layers2"></i>
-								</span>
-								<div class="desc">
-									<h3>Frameworks</h3>
-									<p>J2EE, Spring Boot, Thymeleaf, JUnit, Mockito</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 text-center animate-box">
-							<div class="services color-5">
-								<span class="icon">
-									<i class="icon-data"></i>
-								</span>
-								<div class="desc">
-									<h3>Other</h3>
-									<p>AWS Cloud, Docker, Linux, Maven, GitHub and Gitlab</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 text-center animate-box">
-							<div class="services color-6">
-								<span class="icon">
-									<i class="icon-phone3"></i>
-								</span>
-								<div class="desc">
-									<h3>Soft Skills</h3>
-									<p>Product Management, agile, JIRA, Confluence, MIRO</p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
+          <section class="colorlib-blog" data-section="projects">
+            <div class="colorlib-narrow-content">
+              <div class="row">
+                <div
+                  class="col-md-6 col-md-offset-3 col-md-pull-3 animate-box"
+                  data-animate-effect="fadeInLeft"
+                >
+                  <span class="heading-meta">Personal</span>
+                  <h2 class="colorlib-heading">Projects and blogs</h2>
+                </div>
+              </div>
+              <div class="row">
+                <div
+                  class="col-md-4 col-sm-6 animate-box"
+                  data-animate-effect="fadeInLeft"
+                >
+                  <div class="blog-entry">
+                    <a
+                      href="https://public.tableau.com/app/profile/jack.goggin/vizzes"
+                      target="_blank"
+                      class="blog-img"
+                      ><img
+                        src="images/tableau_image.png"
+                        class="img-responsive"
+                    /></a>
+                    <div class="desc">
+                      <span
+                        ><small
+                          ><a
+                            href="https://public.tableau.com/app/profile/jack.goggin/vizzes"
+                            targe="_blank"
+                            >Dashboard</a
+                          ></small
+                        ></span
+                      >
+                      <span><small>Tableau | Python</small></span>
+                      <h3>Data Analysis</h3>
+                      <p>
+                        See my Tableau vizzes where I complete analysis on data
+                        using Tableua and Python. Examples pices include: "Are
+                        we getting better at making movies?"
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="col-md-4 col-sm-6 animate-box"
+                  data-animate-effect="fadeInLeft"
+                >
+                  <div class="blog-entry">
+                    <a
+                      href="https://my-movielist-in-react.pages.dev/Home"
+                      target="_blank"
+                      class="blog-img"
+                      ><img
+                        src="images/movielist_image.png"
+                        class="img-responsive"
+                    /></a>
+                    <div class="desc">
+                      <span
+                        ><small
+                          ><a
+                            href="https://my-movielist-in-react.pages.dev/Home"
+                            >Website</a
+                          >
+                          |
+                          <a
+                            href="https://github.com/JackHenry-G/my-movielist-in-react"
+                            >Frontend code</a
+                          ></small
+                        >
+                        |
+                        <small
+                          ><a href="https://github.com/JackHenry-G/MovieListApi"
+                            >Backend code</a
+                          ></small
+                        ></span
+                      >
+                      <span
+                        ><small
+                          >SPRING BOOT | REACT | REST API | DOCKER</small
+                        ></span
+                      >
+                      <h3>MovieList - a website for rating movies</h3>
+                      <p>
+                        A Spring Boot & React web application that allows you to
+                        create a personalized list of your movie viewing history
+                        along with ratings and then be notified when they show
+                        in a cinema near you!
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="col-md-4 col-sm-6 animate-box"
+                  data-animate-effect="fadeInLeft"
+                >
+                  <div class="blog-entry">
+                    <a
+                      href="https://dev.to/jackhenryg/my-cloud-resume-challenge-4e6i"
+                      target="_blank"
+                      class="blog-img"
+                      ><img
+                        src="images/cloud_resume_challenge.png"
+                        class="img-responsive"
+                    /></a>
+                    <div class="desc">
+                      <span
+                        ><small
+                          ><a
+                            href="https://dev.to/jackhenryg/my-cloud-resume-challenge-4e6i"
+                            >Blog</a
+                          ></small
+                        ></span
+                      >
+                      <span><small>AWS | CI/CD | CLOUD | PYTHON</small></span>
+                      <h3>How did I build this website with AWS?</h3>
+                      <p>
+                        A short blog on how I developed and deployed this
+                        website on AWS to be secure and scalable, with testing
+                        suites and an automated deployment pipeline using
+                        services like S3, CloudFront, API Gateway, Lambda,
+                        DynamoDB, AWS SAM and more.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
 
-			<section class="colorlib-experience" data-section="experience">
-				<div class="colorlib-narrow-content">
-					<div class="row">
-						<div class="col-md-6 col-md-offset-3 col-md-pull-3 animate-box" data-animate-effect="fadeInLeft">
-							<span class="heading-meta">Work history</span>
-							<h2 class="colorlib-heading animate-box">Experience</h2>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-12">
-				         <div class="timeline-centered">
-							<article class="timeline-entry animate-box" data-animate-effect="fadeInLeft">
-								<div class="timeline-entry-inner">
-									<div class="timeline-icon color-4">
-										<i class="icon-pen2"></i>
-									</div>
+          <section class="colorlib-education" data-section="education">
+            <div class="colorlib-narrow-content">
+              <div class="row">
+                <div
+                  class="col-md-6 col-md-offset-3 col-md-pull-3 animate-box"
+                  data-animate-effect="fadeInLeft"
+                >
+                  <span class="heading-meta">School and Certifications</span>
+                  <h2 class="colorlib-heading animate-box">Education</h2>
+                </div>
+              </div>
 
-									<div class="timeline-label">
-										<h2><a href="#">ASSOCIATE PRODUCT MANAGER (OODLE CAR FINANCE)</a> <span>2023 - 2024</span></h2>
-										<p>
-											Collaborated with varied stakeholders in every phase of the product Lifecyle from ideation to launch, managing a scrum team to develop and maintain a credit loan processing pipeline:
-											<ul>
-												<li>Lead an automation project to increase customer application success rate by 18% and save 30 hours of agent’s time per month.</li>
-												<li>Utilized SQL to make data-driven, evidence-based decisions to drive initiatives.</li>
-											</ul>											
-										</p>										  
-									</div>
-								</div>
-							</article>
+              <div class="row">
+                <div
+                  class="col-md-12 animate-box"
+                  data-animate-effect="fadeInLeft"
+                >
+                  <div class="fancy-collapse-panel">
+                    <div
+                      class="panel-group"
+                      id="accordion"
+                      role="tablist"
+                      aria-multiselectable="true"
+                    >
+                      <!-- Degree -->
+                      <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingOne">
+                          <h4 class="panel-title">
+                            <a
+                              data-toggle="collapse"
+                              data-parent="#accordion"
+                              href="#collapseOne"
+                              aria-expanded="true"
+                              aria-controls="collapseOne"
+                            >
+                              1st Class BSc (Hons) Digital & Technology
+                              Solutions - Software Engineering
+                            </a>
+                          </h4>
+                        </div>
+                        <div
+                          id="collapseOne"
+                          class="panel-collapse collapse in"
+                          role="tabpanel"
+                          aria-labelledby="headingOne"
+                        >
+                          <div class="panel-body">
+                            <p>
+                              <strong>Course description:</strong> This
+                              individual can create technology-enabled solutions
+                              which deliver business benefit. Their experience
+                              includes designing software, deploying solutions,
+                              managing data, managing projects and designing
+                              networks, along with skills in communication,
+                              teamwork, and critical thinking. They have
+                              successfully completed a Tech Industry Gold
+                              accredited degree apprenticeship which
+                              incorporates a holistic blend of technical,
+                              business, project, and professional skills.
+                            </p>
+                            <p>
+                              <strong>Final Major Project:</strong> Designed,
+                              developed, and documented a NO-SQL graphing system
+                              to automatically onboard and configure customers
+                              to a complex cloud network.
+                            </p>
+                            <p>
+                              <strong>Dissertation:</strong> Investigated the
+                              effect of development methodologies on product
+                              quality (microservices vs. monolithic).
+                            </p>
+                            <p>
+                              <strong>Modules:</strong> Advanced Software
+                              Engineering, Mathematics, Cyber Security, Project
+                              Management, etc.
+                            </p>
+                            <p>
+                              More information about the degree can be found
+                              <a
+                                href="https://www.credly.com/org/techskills-organisation-ltd/badge/bsc-hons-digital-technology-solutions-ravensbourne-university"
+                                >here</a
+                              >.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
 
-							<article class="timeline-entry animate-box" data-animate-effect="fadeInLeft">
-								<div class="timeline-entry-inner">
-									<div class="timeline-icon color-1">
-										<i class="icon-pen2"></i>
-									</div>
+                      <!-- AWS Certification -->
+                      <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingTwo">
+                          <h4 class="panel-title">
+                            <a
+                              class="collapsed"
+                              data-toggle="collapse"
+                              data-parent="#accordion"
+                              href="#collapseTwo"
+                              aria-expanded="false"
+                              aria-controls="collapseTwo"
+                            >
+                              AWS Cloud Practitioner Certification CLF-C01
+                            </a>
+                          </h4>
+                        </div>
+                        <div
+                          id="collapseTwo"
+                          class="panel-collapse collapse"
+                          role="tabpanel"
+                          aria-labelledby="headingTwo"
+                        >
+                          <div class="panel-body">
+                            <p>
+                              The AWS Cloud Practitioner certification provides
+                              an overview of AWS cloud computing and its
+                              fundamental concepts, services, and deployment
+                              models. Topics covered include cloud economics,
+                              security, architecture, pricing, and support.
+                              Candidates learn about key AWS services such as
+                              Amazon S3, EC2, RDS, and VPC, and their use cases.
+                              The certification also covers AWS deployment and
+                              management tools, AWS global infrastructure and
+                              compliance, and the AWS Well-Architected
+                              Framework. Overall, it provides a foundational
+                              understanding of AWS cloud for various industries
+                              and organizations.<br /><br />Validation number:
+                              2TQS5VZCSMR4QF5J
+                            </p>
+                            <p>
+                              More information can be found
+                              <a
+                                href="https://www.credly.com/org/amazon-web-services/badge/aws-certified-cloud-practitioner"
+                                >here</a
+                              >.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
 
-									<div class="timeline-label">
-										<h2><a href="#">SOFTWARE ENGINEER (BT)</a> <span>2021 - 2023</span></h2>
-										<p>
-											Worked for BT Radianz, a niche of BT that provided a private, low-latency network for financial institution’s trading systems. This involved developing an enterprise web application using J2EE, for managing BT Radianz’ Cloud Data Centre Inventory management and onboarding of customers:
-											<ul>
-												<li>Collaborated with senior developers using an agile development methodology complete with regular peer programming, code reviews, and source management via GitLab, plus, knowledge sharing.</li>
-												<li>Implemented RESTful web services with JAX-RS to communicate via an API Gateway to back-end microservices where I wrote business logic with core java for over 22 microservices.</li>
-												<li>Created a dynamic user interface through JSP and using HTML, CSS, JavaScript (Ajax), and FreeMarker.</li>
-												<li>Integrated with a No-SQL database, ArangoDB, via the native driver to establish connections, create collections, insert, and query data. Also managed the database for clean data management.</li>
-												<li>Wrote basic tests utilizing the Junit and Mockito frameworks to drive test-driven development.</li>
-												<li>Working in a Linux Ubuntu environment, becoming proficient in configuring and maintaining servers via VMWare, accruing knowledge of architecture along the way.</li>
-												<li>Lead the CI/CD process to deploy microservices within a Docker environment, ensuring consistency across development.</li>
-												<li>Actively participated in sprint planning, scrums, reviews, and retrospectives to contribute to continuous improvement of development processes. Using JIRA, Confluence, and MIRO as tools for success.</li>
-											</ul>
-										</p>										  
-									</div>
-								</div>
-							</article>
+                      <!-- Agentic Automation -->
+                      <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingThree">
+                          <h4 class="panel-title">
+                            <a
+                              class="collapsed"
+                              data-toggle="collapse"
+                              data-parent="#accordion"
+                              href="#collapseThree"
+                              aria-expanded="false"
+                              aria-controls="collapseThree"
+                            >
+                              Professional Agentic Automation Associate
+                            </a>
+                          </h4>
+                        </div>
+                        <div
+                          id="collapseThree"
+                          class="panel-collapse collapse"
+                          role="tabpanel"
+                          aria-labelledby="headingThree"
+                        >
+                          <div class="panel-body">
+                            <p>
+                              Certified in agentic automation with UiPath, with
+                              expertise in how AI agents operate and how to
+                              design, prompt, and evaluate them. Skilled in
+                              prompt engineering, context-aware workflows, and
+                              integrating intelligent agents to streamline
+                              business processes and enhance decision-making.
+							  <p><a
+                                href="jack-cloud-resume/resume-site/UiPath Community Certification Framework - UiPath Certified Professional Agentic Automation Associate_Jack G_en-US_diploma.pdf"
+                                target="_blank"
+                                class="blog-img"
+                                >View certification</a
+                              ></p>
+                              
+                            </p>
+                          </div>
+                        </div>
+                      </div>
 
-							<article class="timeline-entry animate-box" data-animate-effect="fadeInLeft">
-								<div class="timeline-entry-inner">
+                      <!-- Power Platform -->
+                      <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingFour">
+                          <h4 class="panel-title">
+                            <a
+                              class="collapsed"
+                              data-toggle="collapse"
+                              data-parent="#accordion"
+                              href="#collapseFour"
+                              aria-expanded="false"
+                              aria-controls="collapseFour"
+                            >
+                              Power Platform Fundamentals
+                            </a>
+                          </h4>
+                        </div>
+                        <div
+                          id="collapseFour"
+                          class="panel-collapse collapse"
+                          role="tabpanel"
+                          aria-labelledby="headingFour"
+                        >
+                          <div class="panel-body">
+                            <p>
+                              Certified in the foundational capabilities of
+                              Microsoft Power Platform, including Power Apps,
+                              Power Automate, Power BI, and Power Virtual
+                              Agents. Skilled in building low-code apps,
+                              automating workflows, creating interactive
+                              dashboards, and leveraging AI-driven solutions to
+                              streamline business processes. Knowledgeable in
+                              platform security, data governance, and
+                              integrating solutions across Microsoft 365 and
+                              other services to drive efficiency and informed
+                              decision-making.
+                            </p>
+                            <p>
+                              <a
+                                href="https://learn.microsoft.com/api/credentials/share/en-gb/JackGoggin-9693/14A0FCD14B6AB510?sharingId=984346E2E4208138"
+                                target="_blank"
+                                >View Credential</a
+                              >
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
 
-									<div class="timeline-icon color-2">
-										<i class="icon-pen2"></i>
-									</div>
+          <section class="colorlib-contact" data-section="contact">
+            <div class="colorlib-narrow-content">
+              <div class="row">
+                <div
+                  class="col-md-6 col-md-offset-3 col-md-pull-3 animate-box"
+                  data-animate-effect="fadeInLeft"
+                >
+                  <span class="heading-meta">Get in Touch</span>
+                  <h2 class="colorlib-heading">Contact me</h2>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-5">
+                  <div
+                    class="colorlib-feature colorlib-feature-sm animate-box"
+                    data-animate-effect="fadeInLeft"
+                  >
+                    <div class="colorlib-icon">
+                      <i class="fa-brands fa-linkedin-in"></i>
+                    </div>
+                    <div class="colorlib-text">
+                      <p>
+                        <a
+                          href="https://www.linkedin.com/in/jack-goggin"
+                          class="rectangle"
+                        >
+                          My LinkedIn
+                        </a>
+                      </p>
+                    </div>
+                  </div>
 
-									<div class="timeline-label">
-										<h2><a href="#">TECHNICAL SALES SPECIALIST (BT)</a> <span>2019 - 2021</span></h2>
-										<p>Specialist in understanding, promoting and selling BT Radianz’ services to potential clients while providing technical expertise and support through the sales process.
-											<ul>
-												<li>Ownership of customer discussions to translate user pain points into requirements.</li>
-												<li>Practiced interpersonal skills to collaborate globally with sales, delivery, network engineers and diverse customers to deliver successful projects and prove value of bespoke products.</li>
-											</ul>
-										</p>
-									</div>
-								</div>
-							</article>
+                  <div
+                    class="colorlib-feature colorlib-feature-sm animate-box"
+                    data-animate-effect="fadeInLeft"
+                  >
+                    <div class="colorlib-icon">
+                      <i class="fa-brands fa-github"></i>
+                    </div>
+                    <div class="colorlib-text">
+                      <p>
+                        <a
+                          href="https://github.com/JackHenry-G"
+                          class="rectangle"
+                        >
+                          My Github
+                        </a>
+                      </p>
+                    </div>
+                  </div>
 
-							<article class="timeline-entry animate-box" data-animate-effect="fadeInLeft">
-								<div class="timeline-entry-inner">
+                  <div
+                    class="colorlib-feature colorlib-feature-sm animate-box"
+                    data-animate-effect="fadeInLeft"
+                  >
+                    <div class="colorlib-icon">
+                      <i class="icon-map"></i>
+                    </div>
+                    <div class="colorlib-text">
+                      <p>Email me --></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-7 col-md-push-1">
+                  <div class="row">
+                    <div
+                      class="col-md-10 col-md-offset-1 col-md-pull-1 animate-box"
+                      data-animate-effect="fadeInRight"
+                    >
+                      <form id="contact-form" action="">
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="Name"
+                            name="Name"
+                            placeholder="Your name"
+                          />
+                        </div>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="Email"
+                            name="Email"
+                            placeholder="Your email"
+                          />
+                        </div>
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="Subject"
+                            name="Subject"
+                            placeholder="Your subject"
+                          />
+                        </div>
+                        <div class="form-group">
+                          <textarea
+                            name=""
+                            cols="30"
+                            rows="7"
+                            class="form-control"
+                            id="Message"
+                            name="Message"
+                            placeholder="Your message"
+                          ></textarea>
+                        </div>
+                        <div class="form-group">
+                          <input
+                            type="submit"
+                            class="btn btn-primary btn-send-message"
+                            onClick="submitToAPI(event)"
+                            value="Send Message"
+                          />
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+        <!-- end:colorlib-main -->
+      </div>
+      <!-- end:container-wrap -->
+    </div>
+    <!-- end:colorlib-page -->
 
-									<div class="timeline-icon color-3">
-										<i class="icon-pen2"></i>
-									</div>
+    <!-- jQuery -->
+    <script src="js/jquery.min.js"></script>
+    <!-- jQuery Easing -->
+    <script src="js/jquery.easing.1.3.js"></script>
+    <!-- Bootstrap -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- Waypoints -->
+    <script src="js/jquery.waypoints.min.js"></script>
+    <!-- Flexslider -->
+    <script src="js/jquery.flexslider-min.js"></script>
+    <!-- Owl carousel -->
+    <script src="js/owl.carousel.min.js"></script>
+    <!-- Counters -->
+    <script src="js/jquery.countTo.js"></script>
 
-									<div class="timeline-label">
-										<h2><a href="#">DIGITAL & TECHNOLOGY SOLUTIONS DEGREE APPRENTICE (BT)</a> <span>2019 - 2023</span></h2>
-										<p>Integrated degree program, balancing full time work and study towards a BSc degree, to develop professionals able to operate in roles that deliver services to customers in technology spaces. Where I achieved a distinction for my apprenticeship and 1st Class honors for my degree whilst developing projects in advanced software engineering using concurrency, threads, tree data structured and more.</p>
-										<p>More information about the apprenticeship can be found <a href="https://www.instituteforapprenticeships.org/apprenticeship-standards/digital-and-technology-solutions-professional-v1-2">here</a>.</p>
-									</div>
-								</div>
-							</article>
-
-					         <article class="timeline-entry begin animate-box" data-animate-effect="fadeInBottom">
-					            <div class="timeline-entry-inner">
-					               <div class="timeline-icon color-none">
-					               </div>
-					            </div>
-					         </article>
-					      </div>
-					   </div>
-				   </div>
-				</div>
-			</section>
-
-			<section class="colorlib-education" data-section="education">
-				<div class="colorlib-narrow-content">
-					<div class="row">
-						<div class="col-md-6 col-md-offset-3 col-md-pull-3 animate-box" data-animate-effect="fadeInLeft">
-							<span class="heading-meta">School and certifications</span>
-							<h2 class="colorlib-heading animate-box">Education</h2>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-12 animate-box" data-animate-effect="fadeInLeft">
-							<div class="fancy-collapse-panel">
-								<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-									<div class="panel panel-default">
-									    <div class="panel-heading" role="tab" id="headingOne">
-									        <h4 class="panel-title">
-									            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">1st Class BSc (Hons) Digital & Technology Solutions - Software Engineering
-									            </a>
-									        </h4>
-									    </div>
-									    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-									         <div class="panel-body">
-									            <div class="panel-body">
-													<p>This individual can create technology-enabled solutions which deliver business benefit. Their experience includes designing software, deploying solutions, managing data, managing projects and designing networks, along with skills in communication, teamwork and critical thinking. They have successfully completed a Tech Industry Gold accredited degree apprenticeship which incorporates a holistic blend of technical, business, project and professional skills.</p>
-													<p><strong>Final Major Project:</strong> Designed, developed, and documented a NO-SQL graphing system to automatically onboard and configure customers to a complex cloud network.</p>
-													<p><strong>Dissertation:</strong> Investigated the effect of development methodologies on product quality (microservices vs. monolithic).</p>
-													<p><strong>Modules:</strong> Advanced Software Engineering, Mathematics, Cyber Security, Project Management, etc.</p>
-	
-													<p>More information about the degree can found can be <a href="https://www.credly.com/org/techskills-organisation-ltd/badge/bsc-hons-digital-technology-solutions-ravensbourne-university">here</a>.</p>											
-												</div>
-									         </div>
-									    </div>
-									</div>
-									<div class="panel panel-default">
-									    <div class="panel-heading" role="tab" id="headingTwo">
-									        <h4 class="panel-title">
-									            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">AWS Cloud Practitioner Certification CLF-C01
-									            </a>
-									        </h4>
-									    </div>
-									    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-									        <div class="panel-body">
-									            <p>The AWS Cloud Practitioner certification provides an overview of AWS cloud computing and its fundamental concepts, services, and deployment models. Topics covered include cloud economics, security, architecture, pricing, and support. Candidates learn about key AWS services such as Amazon S3, EC2, RDS, and VPC, and their use cases. The certification also covers AWS deployment and management tools, AWS global infrastructure and compliance, and the AWS Well-Architected Framework. Overall, the AWS Cloud Practitioner certification is designed to provide a foundational understanding of AWS cloud and its potential for various industries and organizations.<br><br>Validation number - 2TQS5VZCSMR4QF5J</p>
-												<p>More information can be found <a href="https://www.credly.com/org/amazon-web-services/badge/aws-certified-cloud-practitioner">here</a>.</p>
-											</div>
-									    </div>
-									</div>
-									<div class="panel panel-default">
-									    <div class="panel-heading" role="tab" id="headingThree">
-									        <h4 class="panel-title">
-									            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">GSCE and A-Level Computer Science
-									            </a>
-									        </h4>
-									    </div>
-									    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-									        <div class="panel-body">
-									            <p>GCSE Computer Science covers topics such as programming, algorithms, data representation, hardware, software and networks. Students learn to code in languages like Python and are introduced to concepts such as binary and hexadecimal. A-Level Computer Science delves deeper into programming and algorithms, data structures and computer architecture. Students also explore topics such as databases, operating systems and computer networks. The course aims to provide a more in-depth understanding of computer systems and software engineering principles.</p>	
-									        </div>
-									    </div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
-
-			<section class="colorlib-contact" data-section="contact">
-				<div class="colorlib-narrow-content">
-					<div class="row">
-						<div class="col-md-6 col-md-offset-3 col-md-pull-3 animate-box" data-animate-effect="fadeInLeft">
-							<span class="heading-meta">Get in Touch</span>
-							<h2 class="colorlib-heading">Contact me</h2>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-5">
-							<div class="colorlib-feature colorlib-feature-sm animate-box" data-animate-effect="fadeInLeft">
-								<div class="colorlib-icon">
-									<i class="fa-brands fa-linkedin-in"></i>
-								</div>
-								<div class="colorlib-text">
-									<p>
-										<a href="https://www.linkedin.com/in/jack-goggin" class="rectangle">
-											My LinkedIn
-										</a>
-									</p>
-								</div>
-							</div>
-
-							<div class="colorlib-feature colorlib-feature-sm animate-box" data-animate-effect="fadeInLeft">
-								<div class="colorlib-icon">
-									<i class="fa-brands fa-github"></i>
-								</div>
-								<div class="colorlib-text">
-									<p>
-										<a href="https://github.com/JackHenry-G" class="rectangle">
-											My Github
-										</a>
-									</p>
-								</div>
-							</div>
-
-							<div class="colorlib-feature colorlib-feature-sm animate-box" data-animate-effect="fadeInLeft">
-								<div class="colorlib-icon">
-									<i class="icon-map"></i>
-								</div>
-								<div class="colorlib-text">
-									<p>Email me --></p>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-7 col-md-push-1">
-							<div class="row">
-								<div class="col-md-10 col-md-offset-1 col-md-pull-1 animate-box" data-animate-effect="fadeInRight">
-									<form id="contact-form" action="">
-										<div class="form-group">
-											<input type="text" class="form-control" id="Name" name="Name" placeholder="Your name">
-										</div>
-										<div class="form-group">
-											<input type="text" class="form-control" id="Email" name="Email" placeholder="Your email">
-										</div>
-										<div class="form-group">
-											<input type="text" class="form-control" id="Subject" name="Subject" placeholder="Your subject">
-										</div>
-										<div class="form-group">
-											<textarea name="" cols="30" rows="7" class="form-control"  id="Message" name="Message" placeholder="Your message"></textarea>
-										</div>
-										<div class="form-group">
-											<input type="submit" class="btn btn-primary btn-send-message" onClick="submitToAPI(event)" value="Send Message">
-										</div>
-									</form>
-								</div>
-								
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
-
-		</div><!-- end:colorlib-main -->
-	</div><!-- end:container-wrap -->
-	</div><!-- end:colorlib-page -->
-
-	<!-- jQuery -->
-	<script src="js/jquery.min.js"></script>
-	<!-- jQuery Easing -->
-	<script src="js/jquery.easing.1.3.js"></script>
-	<!-- Bootstrap -->
-	<script src="js/bootstrap.min.js"></script>
-	<!-- Waypoints -->
-	<script src="js/jquery.waypoints.min.js"></script>
-	<!-- Flexslider -->
-	<script src="js/jquery.flexslider-min.js"></script>
-	<!-- Owl carousel -->
-	<script src="js/owl.carousel.min.js"></script>
-	<!-- Counters -->
-	<script src="js/jquery.countTo.js"></script>
-	
-	
-	<!-- MAIN JS -->
-	<script src="js/main.js"></script>
-
-	</body>
+    <!-- MAIN JS -->
+    <script src="js/main.js"></script>
+  </body>
 </html>
